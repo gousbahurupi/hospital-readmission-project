@@ -7,7 +7,6 @@ venv/
 
 # ML artifacts and datasets
 ml-training/dataset/
-ml-training/models/
 *.pkl
 *.joblib
 
@@ -17,3 +16,9 @@ frontend/dist/
 
 # IDE
 .vscode/
+
+# Deployment model artifacts
+!ml-training/models/
+!ml-training/models/model_bundle.pkl
+!ml-training/models/preprocessor.pkl
+!ml-training/models/model_metadata.json
