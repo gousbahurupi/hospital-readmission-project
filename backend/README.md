@@ -167,6 +167,6 @@ Upcoming tasks:
 * Connect the frontend and backend.
 * Add testing and deployment configuration.
 
-## License
+## Licensex
 
 This project is developed for educational and hackathon purposes.
