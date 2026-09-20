@@ -1,0 +1,20 @@
+{
+    "general": {
+        "system_description": "This AI assistant explains predictions from a hospital readmission risk prediction system. It provides decision support and does not provide a medical diagnosis."
+    },
+    "risk_explanation": {
+        "description": "The assistant explains the estimated readmission risk using the prediction and contributing factors provided by the machine learning model."
+    },
+    "factors": {
+        "description": "The assistant identifies and explains the important factors that contributed to the model's prediction."
+    },
+    "monitoring": {
+        "description": "The assistant provides general monitoring and follow-up considerations based on the factors identified by the prediction system. It does not provide treatment or medication instructions."
+    },
+    "model": {
+        "description": "Patient information is processed and provided to a trained machine learning model. The model produces an estimated readmission risk. Explainability information is then used to identify factors that contributed to the prediction."
+    },
+    "limitations": {
+        "description": "The prediction depends on the training data, available patient information, preprocessing, model performance, and other system assumptions. The result should be treated as decision support and not as a diagnosis."
+    }
+}
