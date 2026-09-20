@@ -1,6 +1,7 @@
 {
     "general": {
-        "system_description": "This AI assistant explains predictions from a hospital readmission risk prediction system. It provides decision support and does not provide a medical diagnosis."
+        "system_description": "This AI assistant explains predictions from a hospital readmission risk prediction system. It provides decision support and does not provide a medical diagnosis.",
+        "disclaimer": "This system provides decision support and does not provide a medical diagnosis."
     },
     "risk_explanation": {
         "description": "The assistant explains the estimated readmission risk using the prediction and contributing factors provided by the machine learning model."
@@ -9,12 +10,222 @@
         "description": "The assistant identifies and explains the important factors that contributed to the model's prediction."
     },
     "monitoring": {
-        "description": "The assistant provides general monitoring and follow-up considerations based on the factors identified by the prediction system. It does not provide treatment or medication instructions."
+        "description": "The assistant provides general monitoring and follow-up considerations based on the factors identified by the prediction system. It does not provide treatment or medication instructions.",
+        "intro": "Follow-up and monitoring considerations should be based on the identified risk factors and reviewed by the healthcare team.",
+        "boundary": "These are general considerations for the healthcare team to review. They are not treatment or medication instructions."
     },
     "model": {
-        "description": "Patient information is processed and provided to a trained machine learning model. The model produces an estimated readmission risk. Explainability information is then used to identify factors that contributed to the prediction."
+        "description": "Patient information is processed and provided to a trained machine learning model. The model produces an estimated readmission risk. Explainability information is then used to identify factors that contributed to the prediction.",
+        "note": "This assistant does not calculate the risk itself. It explains the prediction it receives from the prediction system."
     },
     "limitations": {
-        "description": "The prediction depends on the training data, available patient information, preprocessing, model performance, and other system assumptions. The result should be treated as decision support and not as a diagnosis."
+        "description": "The prediction depends on the training data, available patient information, preprocessing, model performance, and other system assumptions. The result should be treated as decision support and not as a diagnosis.",
+        "points": [
+            "Missing, outdated, or incorrect patient inputs can change the result.",
+            "A probability is not a certainty: a patient with a high estimate may not be readmitted, and a patient with a low estimate still can be.",
+            "Contributing factors show what influenced the model, not what caused the outcome.",
+            "The model may perform less well for patient groups that were rare in its training data.",
+            "Use the result alongside clinical judgement, never instead of it."
+        ]
+    },
+    "care_planning": {
+        "description": "General care-planning considerations that teams commonly review when readmission risk is a concern.",
+        "points": [
+            "Confirm that a discharge plan is in place and has been reviewed with the patient and caregivers.",
+            "Arrange follow-up appointments before or soon after discharge, with a clear point of contact.",
+            "Have the clinical team complete a medication review and explain the outcome clearly to the patient.",
+            "Coordinate between the hospital, primary care, and any specialists or community services.",
+            "Make sure the patient and caregivers know which warning signs to report and who to contact."
+        ],
+        "boundary": "These are general considerations, not clinical recommendations for an individual patient. Care decisions belong to the healthcare team."
+    },
+    "explainability": {
+        "description": "Explainability methods, such as SHAP, estimate how much each input contributed to one specific prediction. The contributing factors shown here come from that step. They describe what influenced the model's output, not what caused the patient's condition."
+    },
+    "training_data": {
+        "description": "The model learned from historical patient records and uses only the patient information the prediction system supplies as inputs. Which data was used for training, and which inputs the model expects, is defined in the prediction system's documentation. This assistant has no access to the training data itself."
+    },
+    "data_privacy": {
+        "description": "This service uses the prediction and question you send only to produce the answer for that request, and it does not save them to a database. Application logs record technical details such as the detected question type and response status, not the patient's data or the question text. Your own deployment, network, or proxy may log or store requests separately, so confirm this with your system administrator."
+    },
+    "intended_use": {
+        "description": "This assistant is meant to help clinicians, care coordinators, and other healthcare staff understand a readmission risk prediction. It is decision support. It does not diagnose, prescribe, or replace clinical judgement, and decisions about care should be made by the healthcare team."
+    },
+    "readmission_definition": {
+        "description": "A hospital readmission is when a patient is admitted to hospital again shortly after being discharged. This system estimates the risk of readmission within 30 days of discharge."
+    },
+    "what_if": {
+        "description": "This assistant explains the prediction it was given. It cannot recalculate the risk for changed inputs. To see how a different value would change the result, run the prediction system again with the updated inputs and ask again."
+    },
+    "medical_advice": {
+        "description": "I can't diagnose conditions, recommend treatments, give medication or dosing instructions, or decide whether an individual patient is ready for discharge. This assistant only explains the readmission risk prediction. For questions about an individual patient's diagnosis or treatment, please consult the treating healthcare team."
+    },
+    "emergency": {
+        "description": "If this may be a medical emergency or someone is at risk of harm, contact your local emergency number or emergency services right now. This assistant cannot provide emergency help or medical advice."
+    },
+    "probability_meaning": "The probability is the model's estimate of how likely readmission within 30 days is for patients with this profile. {probability} means the model would expect about {expected} out of 100 similar patients to be readmitted, if its probabilities are well calibrated. It describes a group of similar patients, not a certainty for this individual.",
+    "risk_levels": {
+        "HIGH": {
+            "meaning": "The model places this patient in its higher-risk group, meaning patients with a similar profile were more often readmitted in the data it learned from.",
+            "follow_up": "Teams often use a HIGH result to prioritise discharge planning and closer post-discharge follow-up."
+        },
+        "MEDIUM": {
+            "meaning": "The model places this patient in an intermediate risk group, between its lower and higher estimates.",
+            "follow_up": "Teams often use a MEDIUM result to check that standard discharge planning and follow-up are complete and to look at the factors that raised the estimate."
+        },
+        "LOW": {
+            "meaning": "The model places this patient in its lower-risk group, meaning patients with a similar profile were less often readmitted in the data it learned from.",
+            "follow_up": "Teams often use a LOW result to continue standard discharge planning and follow-up, while staying alert to changes in the patient's situation."
+        },
+        "note": "The exact cut-offs for each risk level are set by the prediction system, not by this assistant."
+    },
+    "prediction_labels": {
+        "LIKELY": "LIKELY means the model's estimated probability is above its decision threshold for readmission within 30 days.",
+        "UNLIKELY": "UNLIKELY means the model's estimated probability is below its decision threshold for readmission within 30 days."
+    },
+    "factor_details": {
+        "a1c": {
+            "label": "A1C result",
+            "aliases": ["a1c", "hba1c", "hemoglobin a1c", "haemoglobin a1c", "glycated hemoglobin", "glycosylated hemoglobin", "glucose control", "glycemic control", "blood sugar control"],
+            "short": "A1C reflects average blood sugar over roughly the past two to three months.",
+            "description": "A1C (HbA1c) reflects average blood sugar over roughly the previous two to three months. In readmission models, higher or abnormal values are commonly associated with poorer glucose control and a higher likelihood of readmission. Depending on how the model was trained, whether the test was performed at all can also influence the prediction.",
+            "monitoring": "Check that the most recent A1C result is documented and has been reviewed by the care team, and that follow-up glucose monitoring is arranged as the care team decides."
+        },
+        "number_of_diagnoses": {
+            "label": "Number of diagnoses",
+            "aliases": ["number of diagnosis", "diagnoses", "diagnosis count", "comorbidity", "comorbidities", "number of conditions", "multiple conditions"],
+            "short": "More recorded diagnoses usually means a more complex clinical picture.",
+            "description": "The number of diagnoses recorded during the stay is a rough measure of clinical complexity. Patients with several coexisting conditions often have more care needs after discharge, and readmission models commonly associate a higher count with higher risk.",
+            "monitoring": "Confirm that each active condition has a follow-up plan and that care is coordinated between the providers involved."
+        },
+        "time_in_hospital": {
+            "label": "Time in hospital",
+            "aliases": ["length of stay", "hospital stay", "days in hospital", "stay length", "duration of stay", "length of hospital stay"],
+            "short": "Longer stays often reflect more severe or complicated illness.",
+            "description": "Time in hospital (length of stay) is a proxy for how severe or complicated the illness was. Longer stays are often associated with a higher chance of readmission, although the relationship depends on the patient population and the model.",
+            "monitoring": "Review discharge readiness and make sure the transition plan and post-discharge follow-up are in place."
+        },
+        "medication": {
+            "label": "Medication-related factors",
+            "aliases": ["medication related", "medication", "medications", "number of medications", "medication change", "medication changes", "insulin", "diabetes medication", "drug", "drugs", "meds"],
+            "short": "Medication-related inputs signal how complex the treatment regimen is.",
+            "description": "Medication-related factors can include the number of medications, whether medications were changed during the stay, or insulin use, depending on the model's inputs. They signal how complex the treatment regimen is, and complex or recently changed regimens are commonly associated with higher readmission risk. This assistant does not give medication advice.",
+            "monitoring": "Make sure the clinical team has completed a discharge medication review and that the patient and caregivers know who to contact with questions."
+        },
+        "prior_visits": {
+            "label": "Prior hospital visits",
+            "aliases": ["prior visits", "previous visits", "prior admissions", "previous admissions", "past admissions", "number of inpatient visits", "inpatient visits", "prior inpatient", "emergency visits", "number of emergency visits", "er visits", "hospital visits"],
+            "short": "Earlier hospital and emergency visits are among the stronger signals of future readmission.",
+            "description": "The number of earlier inpatient and emergency visits shows how often the patient has needed hospital care recently. It is commonly one of the stronger predictors of readmission, because it points to ongoing needs that may not have been resolved.",
+            "monitoring": "Review what led to the earlier visits and whether any of those issues remain unresolved."
+        },
+        "lab_procedures": {
+            "label": "Number of lab procedures",
+            "aliases": ["lab procedures", "lab tests", "number of lab tests", "labs"],
+            "short": "More lab tests can point to a more complex case.",
+            "description": "The number of lab procedures during the stay reflects how much testing was needed, which often tracks with how complex the illness was.",
+            "monitoring": "Check that any pending or abnormal results at discharge have someone responsible for follow-up."
+        },
+        "age": {
+            "label": "Age",
+            "aliases": ["patient age", "age group", "older age"],
+            "short": "Older age is generally associated with higher readmission risk.",
+            "description": "Age is commonly associated with readmission risk because older patients are more likely to have several conditions and to need more support after discharge.",
+            "monitoring": "Consider whether the patient has the support they need at home and a clear point of contact after discharge."
+        },
+        "discharge_disposition": {
+            "label": "Discharge destination",
+            "aliases": ["discharge disposition", "discharge to", "discharged to", "discharge location", "discharge type"],
+            "short": "Where the patient goes after discharge affects the support available.",
+            "description": "Discharge disposition describes where the patient goes after leaving the hospital, such as home, a rehabilitation facility, or a nursing facility. It affects how much support and monitoring is available after discharge.",
+            "monitoring": "Confirm that the receiving setting has the information and follow-up plan it needs."
+        },
+        "admission_type": {
+            "label": "Admission type",
+            "aliases": ["type of admission", "emergency admission", "elective admission", "urgent admission"],
+            "short": "Emergency and planned admissions tend to have different risk profiles.",
+            "description": "Admission type (for example emergency, urgent, or elective) reflects how the patient arrived. Unplanned admissions often involve sicker patients and are associated with different readmission patterns than planned ones.",
+            "monitoring": "Review whether the reason for admission was fully addressed before discharge."
+        }
+    },
+    "question_catalog": [
+        {
+            "category": "Understanding the result",
+            "questions": [
+                {"text": "Give me a summary", "intent": "report"},
+                {"text": "What is the readmission risk?", "intent": "risk_summary"},
+                {"text": "Why is the risk high?", "intent": "risk_explanation"},
+                {"text": "What does this risk level mean?", "intent": "risk_meaning"},
+                {"text": "What does the probability mean?", "intent": "risk_meaning"},
+                {"text": "Will this patient be readmitted?", "intent": "risk_summary"},
+                {"text": "What does readmission mean?", "intent": "readmission_definition"}
+            ]
+        },
+        {
+            "category": "Contributing factors",
+            "questions": [
+                {"text": "What are the top contributing factors?", "intent": "factors"},
+                {"text": "What is the most important factor?", "intent": "top_factor"},
+                {"text": "What does A1C mean?", "intent": "factor_detail"},
+                {"text": "Why does time in hospital matter?", "intent": "factor_detail"},
+                {"text": "What does number of diagnoses mean?", "intent": "factor_detail"},
+                {"text": "How do medications affect the risk?", "intent": "factor_detail"}
+            ]
+        },
+        {
+            "category": "Follow-up and care planning",
+            "questions": [
+                {"text": "What should be monitored after discharge?", "intent": "monitoring"},
+                {"text": "How can the risk be reduced?", "intent": "care_planning"},
+                {"text": "What are the next steps?", "intent": "care_planning"}
+            ]
+        },
+        {
+            "category": "About the model",
+            "questions": [
+                {"text": "How does the model work?", "intent": "model"},
+                {"text": "How are the factors identified?", "intent": "explainability"},
+                {"text": "What data does the model use?", "intent": "training_data"},
+                {"text": "Can I trust this prediction?", "intent": "limitations"},
+                {"text": "What are the limitations of this prediction?", "intent": "limitations"},
+                {"text": "Can you recalculate the risk with different values?", "intent": "what_if"}
+            ]
+        },
+        {
+            "category": "About this assistant",
+            "questions": [
+                {"text": "What can you do?", "intent": "help"},
+                {"text": "Who are you?", "intent": "about"},
+                {"text": "Is patient data stored?", "intent": "data_privacy"},
+                {"text": "Does this replace a clinician?", "intent": "intended_use"},
+                {"text": "Can you give medical advice?", "intent": "medical_advice"}
+            ]
+        }
+    ],
+    "follow_ups": {
+        "report": ["Why is the risk {level}?", "What are the top contributing factors?", "What should be monitored after discharge?"],
+        "risk_summary": ["Why is the risk {level}?", "What does this risk level mean?", "What should be monitored after discharge?"],
+        "risk_explanation": ["What are the top contributing factors?", "What does {top_factor} mean?", "How can the risk be reduced?"],
+        "risk_meaning": ["Why is the risk {level}?", "What are the limitations of this prediction?", "What should be monitored after discharge?"],
+        "factors": ["What is the most important factor?", "What does {top_factor} mean?", "What should be monitored after discharge?"],
+        "top_factor": ["What are the top contributing factors?", "How are the factors identified?", "What should be monitored after discharge?"],
+        "factor_detail": ["What are the top contributing factors?", "What should be monitored after discharge?", "How are the factors identified?"],
+        "monitoring": ["How can the risk be reduced?", "What are the next steps?", "Can I trust this prediction?"],
+        "care_planning": ["What should be monitored after discharge?", "What are the limitations of this prediction?", "Does this replace a clinician?"],
+        "model": ["How are the factors identified?", "What data does the model use?", "Can I trust this prediction?"],
+        "explainability": ["What are the top contributing factors?", "How does the model work?", "What are the limitations of this prediction?"],
+        "limitations": ["How does the model work?", "What data does the model use?", "Does this replace a clinician?"],
+        "intended_use": ["What are the limitations of this prediction?", "Is patient data stored?", "What can you do?"],
+        "data_privacy": ["What can you do?", "Does this replace a clinician?", "How does the model work?"],
+        "training_data": ["How does the model work?", "What are the limitations of this prediction?", "How are the factors identified?"],
+        "readmission_definition": ["Will this patient be readmitted?", "What does this risk level mean?", "Why is the risk {level}?"],
+        "what_if": ["What are the top contributing factors?", "How can the risk be reduced?", "What are the limitations of this prediction?"],
+        "medical_advice": ["What should be monitored after discharge?", "What are the next steps?", "What can you do?"],
+        "emergency": [],
+        "help": ["Give me a summary", "Why is the risk {level}?", "What are the top contributing factors?"],
+        "about": ["Give me a summary", "Why is the risk {level}?", "What can you do?"],
+        "greeting": ["Give me a summary", "Why is the risk {level}?", "What are the top contributing factors?"],
+        "closing": [],
+        "general": ["Give me a summary", "Why is the risk {level}?", "What can you do?"]
     }
 }
