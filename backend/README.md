@@ -128,6 +128,62 @@ uvicorn app.main:app --reload
 http://127.0.0.1:8000/docs
 ```
 
+## Model Deployment
+
+The API loads these artifacts from `ml-training/models/` at startup:
+
+```text
+model_bundle.pkl
+preprocessor.pkl
+model_metadata.json
+```
+
+From the repository root, install dependencies and start the service:
+
+```powershell
+cd D:\hospital-readmission-project\backend
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
+
+The prediction endpoint is:
+
+```text
+POST http://127.0.0.1:8000/api/predict
+```
+
+Example request:
+
+```json
+{
+  "age": "[70-80)",
+  "gender": "Female",
+  "admission_type_id": 1,
+  "admission_source_id": 7,
+  "discharge_disposition_id": 1,
+  "diag_1_group": "Circulatory",
+  "diag_2_group": "Diabetes",
+  "diag_3_group": "Other",
+  "A1Cresult": "None",
+  "max_glu_serum": "None",
+  "diabetesMed": "Yes",
+  "change": "No",
+  "insulin": "No",
+  "time_in_hospital": 4,
+  "num_lab_procedures": 40,
+  "num_procedures": 1,
+  "num_medications": 12,
+  "number_diagnoses": 7
+}
+```
+
+The response includes the model-estimated probability, saved decision threshold,
+binary prediction, and human-readable label. The endpoint applies the saved
+preprocessor before calling the model; clients must send the raw feature fields
+shown above rather than encoded feature columns.
+
 ## Environment Configuration
 
 Environment-specific settings should be stored in a `.env` file and should not be committed to the repository.
