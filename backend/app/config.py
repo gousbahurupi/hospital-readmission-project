@@ -15,6 +15,9 @@ AI_ASSISTANT_API_URL = os.getenv(
 AI_ASSISTANT_API_KEY = os.getenv("AI_ASSISTANT_API_KEY", "")
 FRONTEND_ORIGINS = [
     origin.strip()
-    for origin in os.getenv("FRONTEND_ORIGINS", "http://localhost:5173").split(",")
+    for origin in os.getenv(
+        "FRONTEND_ORIGINS",
+        "http://localhost:5173,https://hospital-readmission-frontend.onrender.com",
+    ).split(",")
     if origin.strip()
 ]

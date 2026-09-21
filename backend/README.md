@@ -136,8 +136,12 @@ Set these environment variables in the backend hosting service:
 ML_API_URL=https://readmission-ml-api.onrender.com
 AI_ASSISTANT_API_URL=https://reedmission-ai-assistant.onrender.com
 AI_ASSISTANT_API_KEY=<the API key configured on the AI Assistant service>
-FRONTEND_ORIGINS=https://your-frontend-domain.com
+FRONTEND_ORIGINS=https://hospital-readmission-frontend.onrender.com
 ```
+
+`FRONTEND_ORIGINS` may contain multiple comma-separated origins, without
+trailing slashes. The deployed frontend origin must be included for browser
+requests to pass CORS validation.
 
 The API loads these artifacts from `ml-training/models/` at startup:
 
