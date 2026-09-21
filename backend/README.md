@@ -143,6 +143,10 @@ FRONTEND_ORIGINS=https://hospital-readmission-frontend.onrender.com
 trailing slashes. The deployed frontend origin must be included for browser
 requests to pass CORS validation.
 
+Use [`backend/.env.example`](./.env.example) as the variable-name reference.
+The value of `AI_ASSISTANT_API_KEY` must exactly match the value of `API_KEY`
+on the AI Assistant service.
+
 The API loads these artifacts from `ml-training/models/` at startup:
 
 ```text

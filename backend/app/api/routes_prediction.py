@@ -7,7 +7,7 @@ from app.schemas.prediction_schema import (
     PatientFeatures,
     PredictionResponse,
 )
-from app.services.assessment_service import assessment_service
+from app.services.assessment_service import DownstreamServiceError, assessment_service
 from app.services.prediction_service import prediction_service
 
 
@@ -23,5 +23,5 @@ def predict(patient: PatientFeatures) -> PredictionResponse:
 def assess(patient: PatientFeatures) -> AssessmentResponse:
     try:
         return assessment_service.assess(patient)
-    except RuntimeError as error:
+    except DownstreamServiceError as error:
         raise HTTPException(status_code=502, detail=str(error)) from error

@@ -4,6 +4,10 @@ from app.config import AI_ASSISTANT_API_KEY, AI_ASSISTANT_API_URL, ML_API_URL
 from app.schemas.prediction_schema import AssessmentResponse, PatientFeatures, PredictionResponse
 
 
+class DownstreamServiceError(RuntimeError):
+    """A safe, user-facing error for a failed dependent service."""
+
+
 def _risk_level(probability: float) -> str:
     if probability >= 0.50:
         return "HIGH"
@@ -61,10 +65,23 @@ class AssessmentService:
                 )
                 assistant_response.raise_for_status()
 
+        except httpx.HTTPStatusError as error:
+            if error.response.status_code == 401 and "assistant" in str(error.request.url):
+                raise DownstreamServiceError(
+                    "The AI assistant rejected the backend API key. "
+                    "Check API_KEY on the AI assistant and AI_ASSISTANT_API_KEY on the backend."
+                ) from error
+            raise DownstreamServiceError(
+                "A prediction service is currently unavailable."
+            ) from error
         except httpx.HTTPError as error:
-            raise RuntimeError("A prediction service is currently unavailable.") from error
+            raise DownstreamServiceError(
+                "A prediction service is currently unavailable."
+            ) from error
         except (KeyError, TypeError, ValueError) as error:
-            raise RuntimeError("The prediction service returned an invalid response.") from error
+            raise DownstreamServiceError(
+                "The prediction service returned an invalid response."
+            ) from error
 
         return AssessmentResponse(
             prediction=prediction,
