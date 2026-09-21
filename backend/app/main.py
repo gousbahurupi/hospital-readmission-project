@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import FRONTEND_ORIGINS
+from app.api.routes_agent import router as agent_router
 from app.api.routes_health import router as health_router
 from app.api.routes_prediction import router as prediction_router
 
@@ -22,3 +23,4 @@ app.add_middleware(
 
 app.include_router(health_router)
 app.include_router(prediction_router)
+app.include_router(agent_router)
