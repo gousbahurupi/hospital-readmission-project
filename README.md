@@ -42,6 +42,7 @@ ml-training/       Training notebooks and model artifacts
 | POST | `/api/predict` | Model prediction only |
 | POST | `/api/assess` | Prediction plus AI explanation |
 | POST | `/api/agent/ask` | Question proxy to the AI Assistant |
+| GET | `/api/model-info` | Predefined model version and limitations |
 
 The ML API exposes:
 
