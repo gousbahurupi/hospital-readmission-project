@@ -130,6 +130,15 @@ http://127.0.0.1:8000/docs
 
 ## Model Deployment
 
+Set these environment variables in the backend hosting service:
+
+```text
+ML_API_URL=https://readmission-ml-api.onrender.com
+AI_ASSISTANT_API_URL=https://reedmission-ai-assistant.onrender.com
+AI_ASSISTANT_API_KEY=<the API key configured on the AI Assistant service>
+FRONTEND_ORIGINS=https://your-frontend-domain.com
+```
+
 The API loads these artifacts from `ml-training/models/` at startup:
 
 ```text

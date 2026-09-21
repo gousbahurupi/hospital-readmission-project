@@ -16,12 +16,23 @@ export function usePrediction() {
     setError(null);
     setLastPatient(patient);
     try {
-      const [predictionResult, explanationResult] = await Promise.all([
-        api.predict(patient),
-        api.explain(patient)
-      ]);
-      setPrediction(predictionResult);
-      setExplanation(explanationResult);
+      const result = await api.assess(patient);
+      const probability = result.prediction.model_estimated_probability;
+      setPrediction({
+        riskScore: probability,
+        riskLevel: probability >= 0.5 ? "high" : probability >= 0.25 ? "medium" : "low",
+        prediction: result.prediction
+      });
+      setExplanation({
+        summary: result.explanation.answer,
+        contributions: (result.explanation.prediction?.top_contributing_factors || []).map((factor) => ({
+          factor,
+          direction: "increases",
+          detail: "Included in the assistant's model-result context."
+        })),
+        recommendations: result.explanation.suggested_questions || [],
+        disclaimer: result.explanation.disclaimer
+      });
       setStatus("success");
     } catch (err) {
       setError(err.message || "Something went wrong while generating the prediction.");

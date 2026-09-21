@@ -34,3 +34,8 @@ class PredictionResponse(BaseModel):
     decision_threshold: float
     prediction: int
     label: str
+
+
+class AssessmentResponse(BaseModel):
+    prediction: PredictionResponse
+    explanation: dict[str, Any]

@@ -11,7 +11,7 @@ async function request(path, { method = "GET", body } = {}) {
       headers: { "Content-Type": "application/json" },
       body: body ? JSON.stringify(body) : undefined
     });
-  } catch (networkError) {
+  } catch {
     throw new ApiError("Could not reach the backend. Check your connection or try again.", 0);
   }
 
@@ -39,6 +39,7 @@ export const api = {
 
   /** @param {import('../types').PatientInput} patient */
   predict: (patient) => request("/api/predict", { method: "POST", body: patient }),
+  assess: (patient) => request("/api/assess", { method: "POST", body: patient }),
 
   /** @param {import('../types').PatientInput} patient */
   explain: (patient) => request("/api/explain", { method: "POST", body: patient }),

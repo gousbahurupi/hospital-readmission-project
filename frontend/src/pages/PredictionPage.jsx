@@ -12,13 +12,13 @@ export function PredictionPage() {
   return (
     <div className="flex-1 flex flex-col">
       <TopBar title="New assessment" subtitle="Fields marked required are needed to generate a score." />
-      <div className="p-8 grid grid-cols-5 gap-5">
-        <Card title="Patient details" className="col-span-3">
+      <div className="grid grid-cols-1 gap-6 p-8 xl:grid-cols-5">
+        <Card title="Patient details" eyebrow="Clinical assessment" className="xl:col-span-3">
           <PatientForm onSubmit={run} disabled={status === "loading"} />
         </Card>
 
-        <div className="col-span-2 space-y-5">
-          <Card title="Risk score" eyebrow="Prediction">
+        <div className="space-y-5 xl:col-span-2">
+          <Card title="Risk score" eyebrow="Model estimate">
             {status === "idle" && (
               <p className="text-sm text-ink/50">Submit the form to see a risk score here.</p>
             )}
@@ -27,7 +27,10 @@ export function PredictionPage() {
               <p className="text-sm text-risk-high">{error}</p>
             )}
             {status === "success" && prediction && (
-              <RiskGauge riskScore={prediction.riskScore} riskLevel={prediction.riskLevel} />
+              <div className="space-y-4">
+                <RiskGauge riskScore={prediction.riskScore} riskLevel={prediction.riskLevel} />
+                <p className="text-xs leading-relaxed text-ink/50">This is an estimated probability, not a medically calibrated diagnosis.</p>
+              </div>
             )}
           </Card>
 

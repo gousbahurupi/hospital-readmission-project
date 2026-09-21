@@ -45,6 +45,7 @@ export function ExplanationPanel({ explanation }) {
           </ul>
         </div>
       )}
+      {explanation.disclaimer && <p className="border-t border-line pt-3 text-xs leading-relaxed text-ink/50">{explanation.disclaimer}</p>}
     </div>
   );
 }
