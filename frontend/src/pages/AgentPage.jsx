@@ -51,8 +51,13 @@ const SUGGESTIONS = [
 
 export function AgentPage() {
   const { messages, pending, send } = useAgent();
-  const [showAllQuestions, setShowAllQuestions] = useState(false);
-  const visibleSuggestions = showAllQuestions ? SUGGESTIONS : SUGGESTIONS.slice(0, 8);
+  const [questionPage, setQuestionPage] = useState(0);
+  const questionsPerPage = 8;
+  const totalPages = Math.ceil(SUGGESTIONS.length / questionsPerPage);
+  const visibleSuggestions = SUGGESTIONS.slice(
+    questionPage * questionsPerPage,
+    (questionPage + 1) * questionsPerPage
+  );
 
   return (
     <div className="flex-1 flex flex-col">
@@ -77,13 +82,27 @@ export function AgentPage() {
               </li>
             ))}
           </ul>
-          <button
-            type="button"
-            onClick={() => setShowAllQuestions((visible) => !visible)}
-            className="mt-3 w-full rounded-sm border border-teal-500 px-3 py-2 text-sm font-medium text-teal-600 hover:bg-teal-50 transition-colors"
-          >
-            {showAllQuestions ? "Show fewer questions" : `Show more questions (${SUGGESTIONS.length - 8} more)`}
-          </button>
+          <div className="mt-3 flex items-center justify-between gap-2">
+            <button
+              type="button"
+              onClick={() => setQuestionPage((page) => Math.max(page - 1, 0))}
+              disabled={questionPage === 0}
+              className="rounded-sm border border-line px-3 py-2 text-sm font-medium text-ink/70 transition-colors hover:border-teal-500 hover:text-ink disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              Previous
+            </button>
+            <span className="text-xs text-ink/50">
+              Page {questionPage + 1} of {totalPages}
+            </span>
+            <button
+              type="button"
+              onClick={() => setQuestionPage((page) => Math.min(page + 1, totalPages - 1))}
+              disabled={questionPage === totalPages - 1}
+              className="rounded-sm border border-line px-3 py-2 text-sm font-medium text-ink/70 transition-colors hover:border-teal-500 hover:text-ink disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              Next
+            </button>
+          </div>
         </Card>
       </div>
     </div>
