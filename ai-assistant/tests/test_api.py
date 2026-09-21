@@ -26,7 +26,7 @@ def test_ask_returns_answer_and_metadata(prediction):
     body = response.json()
     assert body["intent"] == "risk_explanation"
     assert "72%" in body["answer"]
-    assert len(body["suggested_questions"]) == 3
+    assert len(body["suggested_questions"]) == 6
     assert body["prediction"]["risk_level"] == "HIGH"
     assert "decision support" in body["disclaimer"]
 

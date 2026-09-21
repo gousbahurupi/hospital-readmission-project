@@ -108,7 +108,7 @@ def test_suggested_questions_are_filled_in_and_answerable(prediction):
     from app.agent.rules import detect_intent
 
     result = answer_with_metadata("What are the contributing factors?", prediction)
-    assert len(result.suggested_questions) == 3
+    assert len(result.suggested_questions) == 6
     for question in result.suggested_questions:
         assert "{" not in question
         assert detect_intent(question, ["a1c result"]) != "general", question

@@ -6,7 +6,12 @@ import { useAgent } from "../hooks/useAgent.js";
 const SUGGESTIONS = [
   "Why is this patient's risk high?",
   "What does discharge disposition affect?",
-  "What are the model's limitations?"
+  "What are the model's limitations?",
+  "What should be monitored after discharge?",
+  "How can the risk be reduced?",
+  "How does the model work?",
+  "Is patient data stored?",
+  "Can you recalculate the risk with different values?"
 ];
 
 export function AgentPage() {

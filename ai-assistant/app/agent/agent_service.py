@@ -280,7 +280,7 @@ def _help(question: str, prediction: dict) -> str:
     lines = ["I can explain this readmission risk prediction. Here are some things you can ask:", ""]
     for category in KB["question_catalog"]:
         lines.append(category["category"])
-        for item in category["questions"][:3]:
+        for item in category["questions"][:6]:
             lines.append(f"• {item['text'].replace('risk high', f'risk {level}')}")
         lines.append("")
     lines.append(
@@ -343,16 +343,25 @@ _HANDLERS: dict[str, Callable[[str, dict], str]] = {
 }
 
 
-def suggested_questions(intent: str, prediction: dict, limit: int = 3) -> list[str]:
+def suggested_questions(intent: str, prediction: dict, limit: int = 6) -> list[str]:
     """Follow-up questions that make sense after answering `intent`."""
     templates = KB["follow_ups"].get(intent, KB["follow_ups"]["general"])
     factors = prediction["top_contributing_factors"]
     top_factor = factors[0] if factors else "the top factor"
     level = prediction["risk_level"].lower()
-    return [
+    suggestions = [
         template.replace("{level}", level).replace("{top_factor}", top_factor)
         for template in templates[:limit]
     ]
+    if len(suggestions) < limit:
+        for category in KB["question_catalog"]:
+            for item in category["questions"]:
+                question = item["text"].replace("risk high", f"risk {level}")
+                if question not in suggestions:
+                    suggestions.append(question)
+                if len(suggestions) == limit:
+                    return suggestions
+    return suggestions[:limit]
 
 
 # --------------------------------------------------------------------------
